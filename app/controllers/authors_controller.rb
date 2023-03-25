@@ -3,14 +3,12 @@ class AuthorsController < ApplicationController
 
   def index
     authors = Author.all
-    # short_content
-    render json: authors, include: ['posts', 'short_content', 'posts.tags', 'profile']
+    render json: authors, include: ['posts', 'posts.short_content', 'posts.tags', 'profile']
   end
 
   def show
     author = Author.find(params[:id])
-    # short_content
-    render json: author, include: ['posts', 'short_content', 'posts.tags', 'profile']
+    render json: author, include: ['posts', 'posts.short_content', 'posts.tags', 'profile']
   end
 
   private
@@ -19,19 +17,6 @@ class AuthorsController < ApplicationController
     render json: { error: "Author not found" }, status: :not_found
   end
 
-  def short_content
-    if params[:author_id]
-      author = Author.find(params[:author_id])
-      author.posts.map do |post|
-        post.content.length > 40 ? "#{post.content[0..39]}..." : post.content
-      end 
-    else
-      authors.each do |author|
-        author.posts.map do |post|
-          post.content.length > 40 ? "#{post.content[0..39]}..." : post.content
-        end
-      end
-    end
-  end
+ 
 
 end
